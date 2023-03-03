@@ -1,19 +1,21 @@
 from functools import partial
 import aiohttp
-import asyncio
-from bs4 import BeautifulSoup
-from urllib.parse import urlparse
+import asyncio # librería para la ejecución asíncrona
+from bs4 import BeautifulSoup # librería para el análisis de documentos HTML
+from urllib.parse import urlparse # librería para el análisis de URIs
 import sys
+import timeit
+# importamos las librerías necesarias
 
 
-async def wget(session, uri):  
+async def wget(session, uri):  # Función para descargar el contenido de una URI
     async with session.get(uri) as response:  
         if response.status != 200:  
             return None  
         if response.content_type.startswith("text/"):  
-            return await response.text()  
-        else:  
-            return await response.read() 
+            return await response.text()
+        else:
+            return await response.read()
 
 '''async def download(session, uri):  
     content = await wget(session, uri)  
@@ -24,13 +26,13 @@ async def wget(session, uri):
         f.write(content)  
         return uri'''
 
-async def get_images_src_from_html(html_doc):  
+async def get_images_src_from_html(html_doc):  # Función para obtener las imágenes (html) de una página web
     soup = BeautifulSoup(html_doc, "html.parser")
     for img in soup.find_all('img'):
         yield img.get('src')
         await asyncio.sleep(0.001)
 
-async def get_uri_from_images_src(base_uri, images_src):
+async def get_uri_from_images_src(base_uri, images_src):  # Función para obtener las uris de las imagenes dado el src
     """Devuelve una a una cada URI de imagen a descargar"""
     parsed_base = urlparse(base_uri)
     async for src in images_src:
@@ -49,7 +51,7 @@ async def get_uri_from_images_src(base_uri, images_src):
             yield parsed.geturl()
         await asyncio.sleep(0.001)
 
-async def get_images(session, page_uri):  
+async def get_images(session, page_uri):  # Función para obtener y empezar a descargar las imágenes de una página web
     html = await wget(session, page_uri)  
     if not html:  
         print("Error: no se ha encontrado ninguna imagen", sys.stderr)  
@@ -60,7 +62,7 @@ async def get_images(session, page_uri):
         print('Descarga de %s' % image_uri)  
         await download(session, image_uri)
 
-async def main():  
+async def main():  # Función principal ejecutadora
     web_page_uri = 'http://jardinesrinconcillo.com/'
     async with aiohttp.ClientSession() as session:  
         await get_images(session, web_page_uri)
@@ -68,11 +70,11 @@ async def main():
 
 
 
-def write_in_file(filename, content):   
+def write_in_file(filename, content):   # Función para escribir el contenido de una URI en un fichero
     with open(filename, "wb") as f:   
         f.write(content)
 
-async def download(session, uri):  
+async def download(session, uri):  # Función para descargar el contenido de una URI
     content = await wget(session, uri)  
     if content is None:  
         return None 
@@ -81,7 +83,9 @@ async def download(session, uri):
     await loop.run_in_executor(None, partial(write_in_file, uri.split(sep)[-1], content))
     return uri
 
-asyncio.run(main())
 event_loop = asyncio.new_event_loop()
 asyncio.set_event_loop(event_loop)
-event_loop.run_until_complete(main())
+
+if __name__ == '__main__':
+    web_page_uri = 'http://jardinesrinconcillo.com/'
+    print("Tiempo de ejecución: ", timeit.timeit('event_loop.run_until_complete(main())', number=1, setup="from __main__ import event_loop, main"))
