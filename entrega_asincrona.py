@@ -8,7 +8,7 @@ import timeit
 # importamos las librerías necesarias
 
 
-async def wget(session, uri):  # Función para descargar el contenido de una URI
+async def wget(session, uri):  # Devuelve el contenido indicado por una URI
     async with session.get(uri) as response:  
         if response.status != 200:  
             return None  
@@ -22,7 +22,7 @@ async def wget(session, uri):  # Función para descargar el contenido de una URI
     if content is None:  
         return None
     sep="/" if "/" in uri else "\\"
-    with open(uri.split(sep)[-1], "wb") as f:  
+    with open(uri.split(sep)[-1], "wb") as f:
         f.write(content)  
         return uri'''
 
