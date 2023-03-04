@@ -5,7 +5,7 @@ from contextlib import closing
 import sys
 import timeit
 
-def get_images_src_from_html(html_doc):    
+def get_images_src_from_html(html_doc):  # Función para obtener las imágenes (html) de una página web
     """Recupera todo el contenido de los atributos src de las etiquetas 
 img"""   
     soup = BeautifulSoup(html_doc, "html.parser")    
@@ -29,7 +29,7 @@ def get_uri_from_images_src(base_uri, images_src):
         else:    
             yield parsed.geturl()
 
-def wget(uri):    
+def wget(uri):  # Función para descargar una página web
     """    
     Devuelve el contenido indicado por una URI    
    
@@ -60,7 +60,7 @@ def wget(uri):
         print('Respuesta OK')
         return response.read()
 
-def download(uri):    
+def download(uri):  # Función para descargar una imagen
     """    
     Guarda en el disco duro un archivo designado por una URI   
     """    
@@ -72,7 +72,7 @@ def download(uri):
         f.write(content)    
         return uri 
     
-def get_images(page_uri):    
+def get_images(page_uri):  # Función para obtener las imágenes de una página web
     #    
     # Recuperación de las URI de todas las imágenes de una página    
     #    
@@ -87,7 +87,7 @@ def get_images(page_uri):
     #    
     for image_uri in images_uri_gen:    
         print('Descarga de %s' % image_uri)    
-        download(image_uri) 
+        download(image_uri) # Descarga de la imagen
 
 if __name__ == '__main__':    
     print('--- Starting standard download ---')    
