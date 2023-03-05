@@ -98,8 +98,6 @@ if __name__ == '__main__':
     print("Tiempo de ejecución: ", timeit.timeit('event_loop.run_until_complete(main())', number=1, setup="from __main__ import event_loop, main"))     
 ```
 
-Este script se basa en una función que controla la manera de ejecutar nuestro código prueba (secuencial o paralelo). Como se puede observar, la función ejecutora viene acompañada de una decoradora, que en este caso se encarga de medir el tiempo de ejecución para poder comparar que estilo de programación es más beneficioso para nuestro archivo python.
-
 Las imágenes obtenidas son las siguientes:
 
 ![loading](https://user-images.githubusercontent.com/91721699/222955998-5054c54f-c056-4de9-92ab-02d57eef17d4.gif)
@@ -111,7 +109,7 @@ Las imágenes obtenidas son las siguientes:
 ![plano](https://user-images.githubusercontent.com/91721699/222956031-9c32f44b-1ad6-48bc-a3e8-36312d1a22e5.png)
 
 
-Si nos fijamos al final del código, en el apartado del main, pedimos a nuestro algoritmo que mida el tiempo de ejecución con la libreria timeit para poder a posteriori comparárlo con nuestro segundo algoritmo para este problema. El output de este main, además de la descarga de las imágenes anteriores es:
+Si nos fijamos al final del código, en el apartado del main, pedimos a nuestro algoritmo que mida el tiempo de ejecución con la libreria timeit para poder a posteriori comparárlo con nuestro segundo algoritmo para este problema. El output de este main, además de la descarga de las imágenes anteriores, es:
 
 ![tiempo-asincrono](https://user-images.githubusercontent.com/91721699/222956081-0653764f-8401-4024-a134-4ca177c600e5.png)
 
